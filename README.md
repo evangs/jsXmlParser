@@ -53,45 +53,43 @@ jsXmlParser.parseXml(xml);
 {  
    "xmlDoc":{  
       "xmlId":"02965",
-      "salesOrder":[  
-         {  
-            "id":"6C1281B87",
-            "orderID":"6C1281B87",
-            "orderSuffix":"0",
-            "skuList":{  
-               "skuNode": {                     // not an array by default as there is only a single object
-                     "entryID":"00001",
-                     "quantityCancelled":"4",
-                     "reason":"IO",
-                     "sku":"CC3BDAA"
-               }
-            },
-            "cartons":{  
-               "carton":{  
-                  "cartonID":"00020000000112465726",
-                  "weight":"3",
-                  "rate":"167",
-                  "trackingNumber":"92748999920876573010180923",
-                  "shipmentTime":"20150916120714",
-                  "shipmentCarrier":"MIV",
-                  "skuList":{  
-                     "skuNode":[                // if there are multiple objects with same name, an array is created
-                        {  
-                           "entryID":"00001",
-                           "quantityShipped":"6",
-                           "sku":"CC3BDAA"
-                        },
-                        {  
-                           "entryID":"00002",
-                           "quantityShipped":"8",
-                           "sku":"DDD"
-                        }
-                     ]
-                  }
-               }
-            }
-         }
-      ]
+      "salesOrder": {  
+        "id":"6C1281B87",
+        "orderID":"6C1281B87",
+        "orderSuffix":"0",
+        "skuList":{  
+           "skuNode": {                     // not an array by default as there is only a single object
+                 "entryID":"00001",
+                 "quantityCancelled":"4",
+                 "reason":"IO",
+                 "sku":"CC3BDAA"
+           }
+        },
+        "cartons":{  
+           "carton":{  
+              "cartonID":"00020000000112465726",
+              "weight":"3",
+              "rate":"167",
+              "trackingNumber":"92748999920876573010180923",
+              "shipmentTime":"20150916120714",
+              "shipmentCarrier":"MIV",
+              "skuList":{  
+                 "skuNode":[                // if there are multiple objects with same name, an array is created
+                    {  
+                       "entryID":"00001",
+                       "quantityShipped":"6",
+                       "sku":"CC3BDAA"
+                    },
+                    {  
+                       "entryID":"00002",
+                       "quantityShipped":"8",
+                       "sku":"DDD"
+                    }
+                 ]
+              }
+           }
+        }
+     }
    }
 }
 ```
