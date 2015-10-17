@@ -10,7 +10,15 @@ jsXmlParser = {};
 jsXmlParser.parseXml = function parseXml(xml) {
 
     var obj = {};
+    var i = 0;
     jsXmlParser._parseNode(xml, obj);
+
+    // update array paths if available
+    if (jsXmlParser.arrayPaths) {
+        for (i = 0; i < jsXmlParser.arrayPaths.length; i++) {
+            obj = jsXmlParser._validateArrayPath(jsXmlParser.arrayPaths[i], obj);
+        }
+    }
 
     return obj;
 };
@@ -98,9 +106,9 @@ jsXmlParser._parseNode = function parseNode(node, obj) {
                 // if there are more nodes, process them recursively
                 if (Array.isArray(obj[parsedNode[1]])) {
                     l = obj[parsedNode[1]].length - 1;
-                    parseNode(parsedNode[3], obj[parsedNode[1]][l]);
+                    jsXmlParser._parseNode(parsedNode[3], obj[parsedNode[1]][l]);
                 } else {
-                    parseNode(parsedNode[3], obj[parsedNode[1]]);
+                    jsXmlParser._parseNode(parsedNode[3], obj[parsedNode[1]]);
                 }
             }
         }
@@ -123,3 +131,60 @@ jsXmlParser._isEmpty = function isEmpty(obj) {
 
     return true;
 };
+
+/**
+ * updates an array path variable in the js object to be an array
+ *
+ * @param path {String} array path to validate
+ * @param obj {Object} object to validate array path on
+ *
+ * @return {Object} updated js object
+ */
+jsXmlParser._validateArrayPath = function validateArrayPath(path, obj) {
+
+    var parts = path.split('.');
+
+    obj = jsXmlParser._updateArray(parts, obj);
+
+    return obj;
+};
+
+/**
+ * updates an array path variable in the js object to be an array
+ *
+ * @param path {String} array path to validate
+ * @param obj {Object} object to validate array path on
+ *
+ * @return {Object} updated js object
+ */
+jsXmlParser._updateArray = function updateArray(parts, obj) {
+    if (parts.length) {
+        var p = parts[0];
+        parts.splice(0, 1);
+        if (obj[p]) {
+
+            // if its an earlier item in the array path that is an array we need to loop through each element
+            if (parts.length && Array.isArray(obj[p])) {
+                for (var i = 0; i < obj[p].length; i++) {
+                    obj[p][i] = jsXmlParser._updateArray(parts, obj[p][i]);
+                }
+
+            // either last item in path or non array item in path
+            } else {
+                obj[p] = jsXmlParser._updateArray(parts, obj[p]);
+            }
+        }
+
+    // last item in array path
+    } else {
+
+        // only update it to an array if it's not already an array
+        if (!Array.isArray(obj)) {
+            var t = obj;
+            obj = [];
+            obj.push(t);
+        }
+    }
+
+    return obj;
+}
