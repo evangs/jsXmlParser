@@ -143,7 +143,6 @@ jsXmlParser._isEmpty = function isEmpty(obj) {
 jsXmlParser._validateArrayPath = function validateArrayPath(path, obj) {
 
     var parts = path.split('.');
-    $360.log.debug('parts: ' + JSON.stringify(parts), 'jsXmlParser');
     obj = jsXmlParser._updateArray(parts, obj);
 
     return obj;
