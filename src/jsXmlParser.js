@@ -160,7 +160,6 @@ jsXmlParser._validateArrayPath = function validateArrayPath(path, obj) {
 jsXmlParser._updateArray = function updateArray(parts, obj) {
     if (parts.length) {
         var p = parts[0];
-        var partsReset = [];
         parts.splice(0, 1);
         if (obj[p]) {
 
@@ -169,9 +168,7 @@ jsXmlParser._updateArray = function updateArray(parts, obj) {
 
                 for (var i = 0; i < obj[p].length; i++) {
                 	// create a copy of the node parts at this point so that we can reset it after each node update
-                	partsReset = parts.slice();
-                    obj[p][i] = jsXmlParser._updateArray(parts, obj[p][i]);
-                    parts = partsReset;
+                    obj[p][i] = jsXmlParser._updateArray(parts.slice(), obj[p][i]);
                 }
 
             // either last item in path or non array item in path
