@@ -143,7 +143,7 @@ jsXmlParser._isEmpty = function isEmpty(obj) {
 jsXmlParser._validateArrayPath = function validateArrayPath(path, obj) {
 
     var parts = path.split('.');
-
+    $360.log.debug('parts: ' + JSON.stringify(parts), 'jsXmlParser');
     obj = jsXmlParser._updateArray(parts, obj);
 
     return obj;
@@ -160,13 +160,18 @@ jsXmlParser._validateArrayPath = function validateArrayPath(path, obj) {
 jsXmlParser._updateArray = function updateArray(parts, obj) {
     if (parts.length) {
         var p = parts[0];
+        var partsReset = [];
         parts.splice(0, 1);
         if (obj[p]) {
 
             // if its an earlier item in the array path that is an array we need to loop through each element
             if (parts.length && Array.isArray(obj[p])) {
+
                 for (var i = 0; i < obj[p].length; i++) {
+                	// create a copy of the node parts at this point so that we can reset it after each node update
+                	partsReset = parts.slice();
                     obj[p][i] = jsXmlParser._updateArray(parts, obj[p][i]);
+                    parts = partsReset;
                 }
 
             // either last item in path or non array item in path
@@ -187,4 +192,4 @@ jsXmlParser._updateArray = function updateArray(parts, obj) {
     }
 
     return obj;
-}
+};
